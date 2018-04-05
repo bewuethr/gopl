@@ -38,7 +38,7 @@ func main() {
 				continue
 			}
 			redComp := int((z - min) / diff * 0xff)
-			blueComp := int((1 - (z - min)) / diff * 0xff)
+			blueComp := int((1 - (z-min)/diff) * 0xff)
 			if redComp > 0xff {
 				redComp = 0xff
 			}
