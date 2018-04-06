@@ -30,7 +30,7 @@ func interp(i, length, mapTo int) color.RGBA {
 	lower := i * mapTo / length
 	weight := float64(i*mapTo)/float64(length) - float64(lower)
 	r := rainbow[lower].R + uint8(weight*float64(rainbow[lower+1].R-rainbow[lower].R))
-	g := rainbow[lower].R + uint8(weight*float64(rainbow[lower+1].G-rainbow[lower].G))
+	g := rainbow[lower].G + uint8(weight*float64(rainbow[lower+1].G-rainbow[lower].G))
 	b := rainbow[lower].B + uint8(weight*float64(rainbow[lower+1].B-rainbow[lower].B))
 	return color.RGBA{r, g, b, 255}
 }
