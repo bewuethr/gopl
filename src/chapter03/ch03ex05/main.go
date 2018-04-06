@@ -11,6 +11,7 @@ import (
 
 var colors [256]color.RGBA
 var rainbow = []color.RGBA{
+	color.RGBA{255, 0, 0, 255},
 	color.RGBA{148, 0, 211, 255},
 	color.RGBA{75, 0, 130, 255},
 	color.RGBA{0, 0, 255, 255},
