@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Coordinates from
+# http://fractaljourney.blogspot.ch/2010/01/mandelbrot-ultra-zoom-5-21e275.html
+declare -r re='-1.740062382579339905220844167065'
+declare -r im='0.028175339779211048992411521144'
+
+calc_mandelbrot () {
+    repr=$1
+    zoom_from=${2:-0}
+    zoom_to=${3:-10}
+
+    for (( zoom = zoom_from; zoom <= zoom_to; ++zoom )); do
+        echo "$repr"
+        bb=($(bc -l <<< "z = 2^$zoom
+            $re - 2/z
+            $im - 2/z
+            $re + 2/z
+            $im + 2/z"))
+        printf 'Zoom: 2^%d\nxmin: % g\nymin: % g\nxmax: % g\nymax: % g\n' "$zoom" "${bb[@]}"
+        printf -v frame "%0${#zoom_to}d" "$zoom"
+        time go run "$repr"/main.go "${bb[@]:0:3}" > "${repr}_$frame".png
+        echo "=================="
+    done
+}
+
+# Calculate images around artifact limit for each representation
+calc_mandelbrot complex64 14 17
+calc_mandelbrot complex128 43 46
+calc_mandelbrot bigFloat 66 69
+calc_mandelbrot bigRat 70 70
+calc_mandelbrot bigRat 80 80
+calc_mandelbrot bigRat 90 90
+calc_mandelbrot bigRat 100 100
