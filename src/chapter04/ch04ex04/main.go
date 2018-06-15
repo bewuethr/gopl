@@ -19,14 +19,11 @@ func main() {
 // rotate rotates a slice of ints, where the rotation is left for positive
 // amounts and right for negative amounts.
 func rotate(s []int, dist int) {
-	// Get index offset (the element at which index goes into index 0?)
-	offset := (dist + len(s)) % len(s)
-
-	res := make([]int, len(s))
-
-	for i := range s {
-		res[i] = s[(i+offset)%len(s)]
+	var tmp []int
+	if dist > 0 {
+		tmp = append(s[dist:], s[:dist]...)
+	} else {
+		tmp = append(s[-dist:], s[:-dist]...)
 	}
-
-	copy(s, res)
+	copy(s, tmp)
 }
