@@ -11,7 +11,6 @@ import (
 	"chapter04/ch04ex11/github"
 )
 
-// TODO DRY the create, update and close requests
 // TODO Read arguments with command line flags
 // TODO Open editor if title/body is missing in arguments
 
@@ -52,7 +51,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Issue successfully created at %s\n", result.URL)
+		fmt.Printf("Issue successfully created at %s\n", result.HTMLURL)
 
 	case "update":
 		if len(os.Args) < 7 {
@@ -69,7 +68,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Issue at %s successfully updated\n", result.URL)
+		fmt.Printf("Issue at %s successfully updated\n", result.HTMLURL)
 
 	case "close":
 		if len(os.Args) < 5 {
@@ -86,7 +85,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Issue at %s successfully closed\n", result.URL)
+		fmt.Printf("Issue at %s successfully closed\n", result.HTMLURL)
 
 	default:
 		fmt.Fprintf(os.Stderr, "Unknown command '%s'\n"+

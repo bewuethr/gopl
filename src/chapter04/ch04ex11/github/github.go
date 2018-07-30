@@ -38,29 +38,26 @@ type User struct {
 	HTMLURL string `json:"html_url"`
 }
 
-type CreateRequest struct {
-	Title string `json:"title"`
-	Body  string `json:"body"` // in Markdown format
+type reqBody struct {
+	Title string `json:"title,omitempty"`
+	Body  string `json:"body,omitempty"` // in Markdown format
+	State string `json:"state,omitempty"`
 }
 
-type CreateResponse struct {
-	URL string
-}
-
-type CloseRequest struct {
-	State string `json:"state"`
+type URLResponse struct {
+	HTMLURL string `json:"html_url"`
 }
 
 // ReadIssue gets an issue from a repo.
 func ReadIssue(owner, repo string, number int) (*Issue, error) {
-	req, err := http.NewRequest(http.MethodGet,
+	r, err := http.NewRequest(http.MethodGet,
 		fmt.Sprintf("%s/repos/%s/%s/issues/%d", BaseAPIURL, owner, repo, number), nil)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", "application/vnd.github.v3.+json")
-	req.Header.Set("User-Agent", "gopl-ch04ex11-cli-tool")
-	resp, err := http.DefaultClient.Do(req)
+	r.Header.Set("Accept", "application/vnd.github.v3.+json")
+	r.Header.Set("User-Agent", "gopl-ch04ex11-cli-tool")
+	resp, err := http.DefaultClient.Do(r)
 
 	// We must close resp.Body on all execution paths.
 	if resp.StatusCode != http.StatusOK {
@@ -79,106 +76,70 @@ func ReadIssue(owner, repo string, number int) (*Issue, error) {
 
 // CreateIssue creates a new issue in the specified repo and returns the
 // response struct with the URL if successful.
-func CreateIssue(owner, repo, title, body string) (*CreateResponse, error) {
-	reqBody := CreateRequest{
+func CreateIssue(owner, repo, title, body string) (*URLResponse, error) {
+	rBody := reqBody{
 		Title: title,
 		Body:  body,
 	}
-	jsonBody, err := json.Marshal(reqBody)
+	url := fmt.Sprintf("%s/repos/%s/%s/issues", BaseAPIURL, owner, repo)
+	resp, err := sendReqWithBody(rBody, url, http.MethodPost, http.StatusCreated)
 	if err != nil {
-		log.Fatal(err)
-	}
-	req, err := http.NewRequest(http.MethodPost,
-		fmt.Sprintf("%s/repos/%s/%s/issues", BaseAPIURL, owner, repo),
-		bytes.NewBuffer(jsonBody))
-	req.Header.Set("Accept", "application/vnd.github.v3.+json")
-	req.Header.Set("User-Agent", "gopl-ch04ex11-cli-tool")
-	req.Header.Set("Authorization", "Token "+authToken)
-	resp, err := http.DefaultClient.Do(req)
-
-	if resp.StatusCode != http.StatusCreated {
-		resp.Body.Close()
-		return nil, fmt.Errorf("create query failed: %s", resp.Status)
-	}
-
-	var createResponse CreateResponse
-	if err := json.NewDecoder(resp.Body).Decode(&createResponse); err != nil {
-		resp.Body.Close()
 		return nil, err
 	}
-	resp.Body.Close()
-	return &createResponse, nil
+	return resp, nil
 }
 
 // UpdateIssue updates an issue and returns the response struct with the URL if
 // successful.
-func UpdateIssue(owner, repo string, number int, title, body string) (*CreateResponse, error) {
-	reqBody := CreateRequest{
+func UpdateIssue(owner, repo string, number int, title, body string) (*URLResponse, error) {
+	rBody := reqBody{
 		Title: title,
 		Body:  body,
 	}
-	jsonBody, err := json.Marshal(reqBody)
-	if err != nil {
-		log.Fatal(err)
-	}
-	req, err := http.NewRequest(http.MethodPatch,
-		fmt.Sprintf("%s/repos/%s/%s/issues/%d", BaseAPIURL, owner, repo, number),
-		bytes.NewBuffer(jsonBody))
+	url := fmt.Sprintf("%s/repos/%s/%s/issues/%d", BaseAPIURL, owner, repo, number)
+	resp, err := sendReqWithBody(rBody, url, http.MethodPatch, http.StatusOK)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", "application/vnd.github.v3.+json")
-	req.Header.Set("User-Agent", "gopl-ch04ex11-cli-tool")
-	req.Header.Set("Authorization", "Token "+authToken)
-	resp, err := http.DefaultClient.Do(req)
-
-	// We must close resp.Body on all execution paths.
-	if resp.StatusCode != http.StatusOK {
-		resp.Body.Close()
-		return nil, fmt.Errorf("search query failed: %s", resp.Status)
-	}
-
-	var result CreateResponse
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		resp.Body.Close()
-		return nil, err
-	}
-	resp.Body.Close()
-	return &result, nil
+	return resp, nil
 }
 
 // CloseIssue closes an issue and returns the response struct with the URL if
 // successful.
-func CloseIssue(owner, repo string, number int) (*CreateResponse, error) {
-	reqBody := CloseRequest{
+func CloseIssue(owner, repo string, number int) (*URLResponse, error) {
+	rBody := reqBody{
 		State: "closed",
 	}
-	jsonBody, err := json.Marshal(reqBody)
-	if err != nil {
-		log.Fatal(err)
-	}
-	req, err := http.NewRequest(http.MethodPatch,
-		fmt.Sprintf("%s/repos/%s/%s/issues/%d", BaseAPIURL, owner, repo, number),
-		bytes.NewBuffer(jsonBody))
+	url := fmt.Sprintf("%s/repos/%s/%s/issues/%d", BaseAPIURL, owner, repo, number)
+	resp, err := sendReqWithBody(rBody, url, http.MethodPatch, http.StatusOK)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", "application/vnd.github.v3.+json")
-	req.Header.Set("User-Agent", "gopl-ch04ex11-cli-tool")
-	req.Header.Set("Authorization", "Token "+authToken)
-	resp, err := http.DefaultClient.Do(req)
+	return resp, nil
+}
 
-	// We must close resp.Body on all execution paths.
-	if resp.StatusCode != http.StatusOK {
+// sendReqWithBody is what the create, update and close requests have in common.
+func sendReqWithBody(rBody reqBody, url, method string, expectStatus int) (*URLResponse, error) {
+	jsonBody, err := json.Marshal(rBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	r, err := http.NewRequest(method, url, bytes.NewBuffer(jsonBody))
+	r.Header.Set("Accept", "application/vnd.github.v3.+json")
+	r.Header.Set("User-Agent", "gopl-ch04ex11-cli-tool")
+	r.Header.Set("Authorization", "Token "+authToken)
+	resp, err := http.DefaultClient.Do(r)
+
+	if resp.StatusCode != expectStatus {
 		resp.Body.Close()
-		return nil, fmt.Errorf("search query failed: %s", resp.Status)
+		return nil, fmt.Errorf("query failed: %s", resp.Status)
 	}
 
-	var result CreateResponse
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+	var response URLResponse
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 		resp.Body.Close()
 		return nil, err
 	}
 	resp.Body.Close()
-	return &result, nil
+	return &response, nil
 }
