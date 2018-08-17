@@ -17,10 +17,10 @@ type Issue struct {
 }
 
 type User struct {
+	ID        int
 	Login     string
 	HTMLURL   string `json:"html_url"`
 	AvatarURL string `json:"avatar_url"`
-	ReposURL  string `json:"repos_url"`
 }
 
 type Milestone struct {

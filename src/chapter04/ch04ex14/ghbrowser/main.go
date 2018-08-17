@@ -1,8 +1,8 @@
 // Ghbrowser runs an HTTP server to browse the issues of a GitHub repository.
 package main
 
-// TODO Write template for milestone
 // TODO Improve navigation and linking between templates
+// TODO Maybe move templates into separate file
 // TODO Some simple styling
 // TODO Markdown renderer? For example, https://github.com/russross/blackfriday
 
@@ -30,23 +30,30 @@ var issueList = template.Must(template.New("issuelist").Parse(`<h1>{{len .}} iss
 <tr>
   <td><a href='issue/{{.Number}}'>{{.Number}}</a></td>
   <td>{{.State}}</td>
-  <td><a href='{{.User.HTMLURL}}'>{{.User.Login}}</a></td>
-  <td><a href='{{.HTMLURL}}'>{{.Title}}</a></td>
+  <td><a href='user/{{.User.ID}}'>{{.User.Login}}</a></td>
+  <td><a href='issue/{{.Number}}'>{{.Title}}</a></td>
 </tr>
 {{end}}
 </table>`))
 
 var issueTempl = template.Must(template.New("issue").Parse(`<h1>#{{.Number}}: {{.Title}}</h1>
-<p>by {{.User.Login}} &ndash; {{.State}}</p>
+<p>by <a href="/user/{{.User.ID}}">{{.User.Login}}</a> &ndash; {{.State}}</p>
 {{if .Milestone}}<p>Milestone: {{.Milestone.Title}}</p>{{end}}
 <p>Created at {{.CreatedAt}}</p>
 <pre>{{.Body}}</pre>`))
 
-var userTempl = template.Must(template.New("user").Parse(`<h1>{{.Login}}</h1>
-<img src="{{.AvatarURL}}" alt="Avatar"/>
-<p><a href="{{.ReposURL}}">Repositories</a></p>`))
+var userTempl = template.Must(template.New("user").Parse(`<h1><a href="{{.HTMLURL}}">{{.Login}}</a></h1>
+<img src="{{.AvatarURL}}" alt="Avatar"/>`))
 
-var issues []github.Issue
+var milestoneTempl = template.Must(template.New("milestone").Parse(`<h1>Milestone #{{.Number}}: {{.Title}}</h1>
+<p><a href="{{.HTMLURL}}">Link</a> &ndash; {{.State}}</p>
+<pre>{{.Description}}</pre>`))
+
+var (
+	issues     []github.Issue
+	users      []github.User
+	milestones []github.Milestone
+)
 
 func init() {
 	if len(os.Args) != 3 {
@@ -54,7 +61,7 @@ func init() {
 		os.Exit(1)
 	}
 	var err error
-	issues, err = github.GetIssues(os.Args[1], os.Args[2])
+	issues, users, milestones, err = github.GetRepoInfo(os.Args[1], os.Args[2])
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -63,6 +70,7 @@ func init() {
 func main() {
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/issue/", issueHandler)
+	http.HandleFunc("/user/", userHandler)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 	return
 }
@@ -88,6 +96,25 @@ func issueHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := issueTempl.Execute(w, issue); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func userHandler(w http.ResponseWriter, r *http.Request) {
+	pathWords := strings.Split(r.URL.Path, "/")
+	id, err := strconv.Atoi(pathWords[len(pathWords)-1])
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	user, err := github.GetUserByID(users, id)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	if err := userTempl.Execute(w, user); err != nil {
 		log.Fatal(err)
 	}
 }
