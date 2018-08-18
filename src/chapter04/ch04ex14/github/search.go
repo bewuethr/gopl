@@ -74,3 +74,14 @@ func GetUserByID(users []User, id int) (*User, error) {
 	}
 	return nil, fmt.Errorf("could not find user with ID %d", id)
 }
+
+// GetMilestoneByNumber returns the milestone with number n from the given
+// slice of milestones.
+func GetMilestoneByNumber(milestones []Milestone, n int) (*Milestone, error) {
+	for _, milestone := range milestones {
+		if milestone.Number == n {
+			return &milestone, nil
+		}
+	}
+	return nil, fmt.Errorf("could not find milestone with number %d", n)
+}
