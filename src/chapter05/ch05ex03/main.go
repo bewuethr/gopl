@@ -24,7 +24,7 @@ func main() {
 // visit appends to contents the content of each text node found in n and
 // returns the result.
 func visit(contents []string, n *html.Node) []string {
-	if n == nil || strings.ToLower(n.Data) == "script" || strings.ToLower(n.Data) == "style" {
+	if n == nil || n.Data == "script" || n.Data == "style" {
 		return contents
 	}
 
