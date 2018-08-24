@@ -12,7 +12,7 @@ import (
 func main() {
 	doc, err := html.Parse(os.Stdin)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "ch05ex01: %v\n", err)
+		fmt.Fprintf(os.Stderr, "ch05ex02: %v\n", err)
 		os.Exit(1)
 	}
 	for name, count := range visit(make(map[string]int), doc) {
