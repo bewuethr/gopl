@@ -1,4 +1,4 @@
-// Ch05ex03 traverses and HTML tree and prints the content of all text nodes
+// ch05ex03 traverses and HTML tree and prints the content of all text nodes
 // (except contents of script and style elements).
 package main
 

@@ -1,4 +1,4 @@
-// Ch05ex04 extracts image, script and style sheet links.
+// ch05ex04 extracts image, script and style sheet links.
 package main
 
 import (

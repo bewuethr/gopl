@@ -1,4 +1,4 @@
-// Ch05ex01 is a version of findlinks with recursive child traversal instead of
+// ch05ex01 is a version of findlinks with recursive child traversal instead of
 // a loop.
 package main
 
