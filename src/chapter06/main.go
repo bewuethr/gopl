@@ -39,4 +39,8 @@ func main() {
 	z.Remove(155)
 	fmt.Printf("z (copy of x) after adding 100 and removing 155: %v\n", z.String())
 	fmt.Printf("and x is still: %v\n", x.String())
+
+	// Exercise 5.2
+	z.AddAll(200, 300, 400)
+	fmt.Printf("z after adding 200, 300, 400: %v\n", z)
 }

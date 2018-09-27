@@ -52,6 +52,13 @@ func (s *IntSet) Copy() *IntSet {
 	return &t
 }
 
+// AddAll adds a list of values to s (exercise 5.2).
+func (s *IntSet) AddAll(vals ...int) {
+	for _, v := range vals {
+		s.Add(v)
+	}
+}
+
 // Has reports whether the set contains the non-negative value x.
 func (s *IntSet) Has(x int) bool {
 	word, bit := x/64, uint(x%64)
