@@ -12,7 +12,7 @@ type IntSet struct {
 	words []uint64
 }
 
-// Len returns the number of elements in s (exercise 5.1).
+// Len returns the number of elements in s (exercise 6.1).
 func (s *IntSet) Len() int {
 	var count int
 	for _, word := range s.words {
@@ -28,7 +28,7 @@ func (s *IntSet) Len() int {
 	return count
 }
 
-// Remove removes x from s, if s contains x (exercise 5.1).
+// Remove removes x from s, if s contains x (exercise 6.1).
 func (s *IntSet) Remove(x int) {
 	if s.Has(x) {
 		word, bit := x/64, uint(x%64)
@@ -36,14 +36,14 @@ func (s *IntSet) Remove(x int) {
 	}
 }
 
-// Clear removes all elements from s (exercise 5.1).
+// Clear removes all elements from s (exercise 6.1).
 func (s *IntSet) Clear() {
 	for i := range s.words {
 		s.words[i] = 0
 	}
 }
 
-// Copy returns a copy of s (exercise 5.1).
+// Copy returns a copy of s (exercise 6.1).
 func (s *IntSet) Copy() *IntSet {
 	var t IntSet
 	for _, word := range s.words {
@@ -52,7 +52,7 @@ func (s *IntSet) Copy() *IntSet {
 	return &t
 }
 
-// AddAll adds a list of values to s (exercise 5.2).
+// AddAll adds a list of values to s (exercise 6.2).
 func (s *IntSet) AddAll(vals ...int) {
 	for _, v := range vals {
 		s.Add(v)
@@ -83,6 +83,49 @@ func (s *IntSet) UnionWith(t *IntSet) {
 			s.words = append(s.words, tword)
 		}
 	}
+}
+
+// IntersectWith sets s to the intersection of s and t (exercise 6.3).
+func (s *IntSet) IntersectWith(t *IntSet) {
+	for i, word := range s.words {
+		if word == 0 {
+			continue
+		}
+		for j := 0; j < 64; j++ {
+			if word&(1<<uint(j)) != 0 {
+				if !t.Has(64*i + j) {
+					s.Remove(64*i + j)
+				}
+			}
+		}
+	}
+}
+
+// DifferenceWith sets s to the set difference s - t (exercise 6.3).
+func (s *IntSet) DifferenceWith(t *IntSet) {
+	for i, word := range s.words {
+		if word == 0 {
+			continue
+		}
+		for j := 0; j < 64; j++ {
+			if word&(1<<uint(j)) != 0 {
+				if t.Has(64*i + j) {
+					s.Remove(64*i + j)
+				}
+			}
+		}
+	}
+}
+
+// SymmetricDifference sets s to the symmetric difference of s and t (exercise 6.3).
+func (s *IntSet) SymmetricDifference(t *IntSet) {
+	s2 := s.Copy()
+	s2.IntersectWith(t)
+	t2 := t.Copy()
+
+	s.DifferenceWith(t)
+	t2.DifferenceWith(s2)
+	s.UnionWith(t2)
 }
 
 // String returns the set as a string of the form "{1 2 3}".
