@@ -128,6 +128,22 @@ func (s *IntSet) SymmetricDifference(t *IntSet) {
 	s.UnionWith(t2)
 }
 
+// Elems returns an int slice contaning the elements of s (exercise 6.4).
+func (s *IntSet) Elems() []int {
+	var elems []int
+	for i, word := range s.words {
+		if word == 0 {
+			continue
+		}
+		for j := 0; j < 64; j++ {
+			if word&(1<<uint(j)) != 0 {
+				elems = append(elems, i*64+j)
+			}
+		}
+	}
+	return elems
+}
+
 // String returns the set as a string of the form "{1 2 3}".
 func (s *IntSet) String() string {
 	var buf bytes.Buffer

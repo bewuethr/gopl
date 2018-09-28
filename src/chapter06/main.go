@@ -63,4 +63,9 @@ func main() {
 	fmt.Printf("y: %v\n", y.String())
 	x.SymmetricDifference(&y)
 	fmt.Printf("x after symmetric difference with y (expect {1 4}): %v\n", x.String())
+
+	// Exercise 6.4
+	fmt.Println()
+	e := y.Elems()
+	fmt.Printf("Elements of y (expect [2 3 4]): %v\n", e)
 }
