@@ -11,30 +11,29 @@ type WordCounter int
 type LineCounter int
 
 func (w *WordCounter) Write(p []byte) (int, error) {
-	scanner := bufio.NewScanner(bytes.NewReader(p))
-	scanner.Split(bufio.ScanWords)
-
-	written := 0
-
-	for scanner.Scan() {
-		*w++
-		written += len(scanner.Bytes())
-	}
-
-	return written, scanner.Err()
+	count, written, err := counter(p, bufio.ScanWords)
+	*w += WordCounter(count)
+	return written, err
 }
 
 func (l *LineCounter) Write(p []byte) (int, error) {
-	scanner := bufio.NewScanner(bytes.NewReader(p))
+	count, written, err := counter(p, bufio.ScanLines)
+	*l += LineCounter(count)
+	return written, err
+}
 
-	written := 0
+func counter(p []byte, sf bufio.SplitFunc) (int, int, error) {
+	scanner := bufio.NewScanner(bytes.NewReader(p))
+	scanner.Split(sf)
+
+	count, written := 0, 0
 
 	for scanner.Scan() {
-		*l++
+		count++
 		written += len(scanner.Bytes())
 	}
 
-	return written, scanner.Err()
+	return count, written, scanner.Err()
 }
 
 func main() {
