@@ -2,21 +2,39 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
-	"strings"
 )
 
 type WordCounter int
 type LineCounter int
 
 func (w *WordCounter) Write(p []byte) (int, error) {
-	*w += WordCounter(len(strings.Fields(string(p))))
-	return len(p), nil
+	scanner := bufio.NewScanner(bytes.NewReader(p))
+	scanner.Split(bufio.ScanWords)
+
+	written := 0
+
+	for scanner.Scan() {
+		*w++
+		written += len(scanner.Bytes())
+	}
+
+	return written, scanner.Err()
 }
 
 func (l *LineCounter) Write(p []byte) (int, error) {
-	*l += LineCounter(len(strings.Split(string(p), "\n")))
-	return len(p), nil
+	scanner := bufio.NewScanner(bytes.NewReader(p))
+
+	written := 0
+
+	for scanner.Scan() {
+		*l++
+		written += len(scanner.Bytes())
+	}
+
+	return written, scanner.Err()
 }
 
 func main() {
