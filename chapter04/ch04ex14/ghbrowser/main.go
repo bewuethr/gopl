@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"chapter04/ch04ex14/github"
+	"gopl/chapter04/ch04ex14/github"
 )
 
 type headerInfo struct {

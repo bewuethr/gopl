@@ -12,7 +12,7 @@ import (
 	"os"
 	"strings"
 
-	"chapter05/ch05ex13/links"
+	"gopl/chapter05/ch05ex13/links"
 )
 
 // breadthFirst calls f for each item in the worklist. Any items returned by f

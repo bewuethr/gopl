@@ -10,7 +10,7 @@ import (
 	"os/exec"
 	"strconv"
 
-	"chapter04/ch04ex11/github"
+	"gopl/chapter04/ch04ex11/github"
 )
 
 func main() {

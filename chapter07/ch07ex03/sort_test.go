@@ -5,7 +5,7 @@ import (
 	"sort"
 	"testing"
 
-	treesort "chapter07/ch07ex03"
+	treesort "gopl/chapter07/ch07ex03"
 )
 
 func TestSort(t *testing.T) {

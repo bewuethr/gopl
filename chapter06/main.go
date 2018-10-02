@@ -4,7 +4,7 @@ package main
 import (
 	"fmt"
 
-	"chapter06/intset"
+	"gopl/chapter06/intset"
 )
 
 func main() {

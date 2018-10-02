@@ -3,8 +3,8 @@ package ch02ex03
 import (
 	"testing"
 
-	"chapter02/ch02ex04"
-	"chapter02/ch02ex05"
+	"gopl/chapter02/ch02ex04"
+	"gopl/chapter02/ch02ex05"
 )
 
 // pc[i] is the population count of i.
