@@ -12,21 +12,21 @@ import (
 
 type CtWriter struct {
 	writer    io.Writer
-	byteCount *int64
+	byteCount int64
 }
 
-func (w CtWriter) Write(p []byte) (int, error) {
+func (w *CtWriter) Write(p []byte) (int, error) {
 	count, err := w.writer.Write(p)
-	*w.byteCount += int64(count)
+	w.byteCount += int64(count)
 	return count, err
 }
 
 func CountingWriter(w io.Writer) (io.Writer, *int64) {
-	cw := CtWriter{
+	cw := &CtWriter{
 		writer:    w,
-		byteCount: new(int64),
+		byteCount: 0,
 	}
-	return cw, cw.byteCount
+	return cw, &cw.byteCount
 }
 
 func main() {
