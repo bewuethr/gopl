@@ -44,4 +44,25 @@ func main() {
 	sort.Sort(statefulTracks)
 	fmt.Println("\nAfter sort:")
 	printTracks(statefulTracks.Tracks())
+
+	fmt.Println("\nSet primary to Year")
+	statefulTracks.SetPrimary("Year")
+	sort.Sort(statefulTracks)
+	printTracks(statefulTracks.Tracks())
+
+	fmt.Println("\nSet primary to Title")
+	statefulTracks.SetPrimary("Title")
+	sort.Sort(statefulTracks)
+	printTracks(statefulTracks.Tracks())
+
+	fmt.Println("\nSet primary to Artist, then Title")
+	statefulTracks.SetPrimary("Artist")
+	statefulTracks.SetPrimary("Title")
+	sort.Sort(statefulTracks)
+	printTracks(statefulTracks.Tracks())
+
+	fmt.Println("\nSet primary to Title again, reverse sort order")
+	statefulTracks.SetPrimary("Title")
+	sort.Sort(statefulTracks)
+	printTracks(statefulTracks.Tracks())
 }

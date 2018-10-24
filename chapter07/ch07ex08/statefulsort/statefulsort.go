@@ -2,7 +2,10 @@
 // mutable order in which track fields are taken into account for sorting.
 package statefulsort
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // Track describes a music track on an album.
 type Track struct {
@@ -14,7 +17,7 @@ type Track struct {
 }
 
 // These functions behave like C's strcmp
-func lessTitle(x, y *Track) int {
+func cmpTitle(x, y *Track) int {
 	if x.Title < y.Title {
 		return -1
 	} else if x.Title == y.Title {
@@ -24,7 +27,7 @@ func lessTitle(x, y *Track) int {
 	}
 }
 
-func lessArtist(x, y *Track) int {
+func cmpArtist(x, y *Track) int {
 	if x.Artist < y.Artist {
 		return -1
 	} else if x.Artist == y.Artist {
@@ -34,7 +37,7 @@ func lessArtist(x, y *Track) int {
 	}
 }
 
-func lessAlbum(x, y *Track) int {
+func cmpAlbum(x, y *Track) int {
 	if x.Album < y.Album {
 		return -1
 	} else if x.Album == y.Album {
@@ -44,7 +47,7 @@ func lessAlbum(x, y *Track) int {
 	}
 }
 
-func lessYear(x, y *Track) int {
+func cmpYear(x, y *Track) int {
 	if x.Year < y.Year {
 		return -1
 	} else if x.Year == y.Year {
@@ -54,7 +57,7 @@ func lessYear(x, y *Track) int {
 	}
 }
 
-func lessLength(x, y *Track) int {
+func cmpLength(x, y *Track) int {
 	if x.Length < y.Length {
 		return -1
 	} else if x.Length == y.Length {
@@ -70,11 +73,11 @@ type sortStruct struct {
 }
 
 var sortStructs = []*sortStruct{
-	{"Title", lessTitle},
-	{"Artist", lessArtist},
-	{"Album", lessAlbum},
-	{"Year", lessYear},
-	{"Length", lessLength},
+	{"Title", cmpTitle},
+	{"Artist", cmpArtist},
+	{"Album", cmpAlbum},
+	{"Year", cmpYear},
+	{"Length", cmpLength},
 }
 
 // StatefulSort implements sort.Interface and keeps track of the order in which
@@ -82,11 +85,12 @@ var sortStructs = []*sortStruct{
 type StatefulSort struct {
 	t           []*Track
 	sortStructs []*sortStruct
+	reverse     bool
 }
 
 // NewStatefulTracks returns a statful sort for the slice of tracks t.
 func NewStatefulTracks(t []*Track) StatefulSort {
-	return StatefulSort{t, sortStructs}
+	return StatefulSort{t, sortStructs, false}
 }
 
 // Tracks returns the tracks of a stateful sort.
@@ -106,10 +110,40 @@ func (s StatefulSort) Less(i, j int) bool {
 	for _, sStr := range s.sortStructs {
 		switch sStr.sortFunc(s.t[i], s.t[j]) {
 		case -1:
-			return true
+			return !s.reverse
 		case 1:
-			return false
+			return s.reverse
 		}
 	}
-	return false
+	return s.reverse
+}
+
+// SetPrimary moves the sort function corresponding to name n to the front of
+// the sort function slice. If it already is at the front, the sort order is
+// reversed by flipping reverse.
+func (s *StatefulSort) SetPrimary(n string) error {
+	idx := -1
+	for i, v := range s.sortStructs {
+		if v.name == n {
+			idx = i
+			break
+		}
+	}
+	if idx == -1 {
+		// Name not found
+		return fmt.Errorf("sortStruct with name %v not found", n)
+	}
+
+	if idx == 0 {
+		// Reverse sort order
+		s.reverse = !s.reverse
+		return nil
+	}
+
+	// Rearrange to move new primary to front
+	newSortStructs := []*sortStruct{s.sortStructs[idx]}
+	newSortStructs = append(newSortStructs, s.sortStructs[:idx]...)
+	newSortStructs = append(newSortStructs, s.sortStructs[idx+1:]...)
+	s.sortStructs = newSortStructs
+	return nil
 }
