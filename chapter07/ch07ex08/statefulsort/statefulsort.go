@@ -1,114 +1,62 @@
-// Package statefulsort provides a sort interface for music tracks with a
-// mutable order in which track fields are taken into account for sorting.
+// Package statefulsort provides a sort interface to sort elements with a
+// mutable order in which element fields are taken into account for sorting.
 package statefulsort
 
-import (
-	"fmt"
-	"time"
-)
-
-// Track describes a music track on an album.
-type Track struct {
-	Title  string
-	Artist string
-	Album  string
-	Year   int
-	Length time.Duration
-}
-
-// These functions behave like C's strcmp
-func cmpTitle(x, y *Track) int {
-	if x.Title < y.Title {
-		return -1
-	} else if x.Title == y.Title {
-		return 0
-	} else {
-		return 1
-	}
-}
-
-func cmpArtist(x, y *Track) int {
-	if x.Artist < y.Artist {
-		return -1
-	} else if x.Artist == y.Artist {
-		return 0
-	} else {
-		return 1
-	}
-}
-
-func cmpAlbum(x, y *Track) int {
-	if x.Album < y.Album {
-		return -1
-	} else if x.Album == y.Album {
-		return 0
-	} else {
-		return 1
-	}
-}
-
-func cmpYear(x, y *Track) int {
-	if x.Year < y.Year {
-		return -1
-	} else if x.Year == y.Year {
-		return 0
-	} else {
-		return 1
-	}
-}
-
-func cmpLength(x, y *Track) int {
-	if x.Length < y.Length {
-		return -1
-	} else if x.Length == y.Length {
-		return 0
-	} else {
-		return 1
-	}
-}
+import "fmt"
 
 type sortStruct struct {
-	name     string
-	sortFunc func(x, y *Track) int
-}
-
-var sortStructs = []*sortStruct{
-	{"Title", cmpTitle},
-	{"Artist", cmpArtist},
-	{"Album", cmpAlbum},
-	{"Year", cmpYear},
-	{"Length", cmpLength},
+	name    string
+	cmpFunc func(x, y interface{}) int
 }
 
 // StatefulSort implements sort.Interface and keeps track of the order in which
-// the fields are looked at when comparing two tracks.
+// the fields are looked at when comparing two elements.
 type StatefulSort struct {
-	t           []*Track
+	elements    []interface{}
 	sortStructs []*sortStruct
 	reverse     bool
 }
 
-// NewStatefulTracks returns a statful sort for the slice of tracks t.
-func NewStatefulTracks(t []*Track) StatefulSort {
-	return StatefulSort{t, sortStructs, false}
+// NewStatefulSort returns a stateful sort for the slice of elements e, which
+// must implement the Sortable interface. names is a slice of names
+// corresponding to the fields of each element, and cmpFuncs is a slice of
+// functions to compare two elements. The number of functions must be the same
+// as the number of names, and each function compares based on the field
+// corresponding to the name with the same index.
+//
+// A comparison function returns -1 if x sorts before y, 0 if they sort the
+// same, and 1 if y sorts before x, just like C's strcmp.
+func NewStatefulSort(e []interface{}, names []string, cmpFuncs []func(x, y interface{}) int) StatefulSort {
+	if len(names) != len(cmpFuncs) {
+		panic("different number of names and sort functions")
+	}
+	sortStructs := []*sortStruct{}
+	for i := range names {
+		sortStructs = append(sortStructs, &sortStruct{
+			names[i],
+			cmpFuncs[i],
+		})
+	}
+
+	return StatefulSort{e, sortStructs, false}
 }
 
-// Tracks returns the tracks of a stateful sort.
-func (s StatefulSort) Tracks() []*Track {
-	return s.t
+// Elements returns the elements of a stateful sort.
+func (s StatefulSort) Elements() []interface{} {
+	return s.elements
 }
 
-// Len returns the number of tracks in s.
-func (s StatefulSort) Len() int { return len(s.t) }
+// Len returns the number of elements in s.
+func (s StatefulSort) Len() int { return len(s.elements) }
 
-// Swap swaps the tracks at indices i and j.
-func (s StatefulSort) Swap(i, j int) { s.t[i], s.t[j] = s.t[j], s.t[i] }
+// Swap swaps the elements at indices i and j.
+func (s StatefulSort) Swap(i, j int) { s.elements[i], s.elements[j] = s.elements[j], s.elements[i] }
 
-// Less compares two tracks based on the current ordering of the comparison
+// Less compares two eleements based on the current ordering of the comparison
 // functions.
 func (s StatefulSort) Less(i, j int) bool {
 	for _, sStr := range s.sortStructs {
-		switch sStr.sortFunc(s.t[i], s.t[j]) {
+		switch sStr.cmpFunc(s.elements[i], s.elements[j]) {
 		case -1:
 			return !s.reverse
 		case 1:
