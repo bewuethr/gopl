@@ -52,8 +52,12 @@ func (s StatefulSort) Len() int { return len(s.elements) }
 // Swap swaps the elements at indices i and j.
 func (s StatefulSort) Swap(i, j int) { s.elements[i], s.elements[j] = s.elements[j], s.elements[i] }
 
-// Less compares two eleements based on the current ordering of the comparison
-// functions.
+// Less compares two elements based on the current ordering of the comparison
+// functions. If elements are not the same, true is returned if i sorts before
+// j and false otherwise, unless reverse is set, in which case the opposite
+// happens.
+//
+// If the elements compare identical, the next sort function is considered.
 func (s StatefulSort) Less(i, j int) bool {
 	for _, sStr := range s.sortStructs {
 		switch sStr.cmpFunc(s.elements[i], s.elements[j]) {

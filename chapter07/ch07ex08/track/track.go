@@ -31,13 +31,18 @@ func Length(s string) time.Duration {
 	return d
 }
 
-// These functions behave like C's strcmp
-func cmpTitle(x, y interface{}) int {
+func toTrack(x, y interface{}) (*Track, *Track) {
 	xx, ok1 := x.(*Track)
 	yy, ok2 := y.(*Track)
 	if !ok1 || !ok2 {
 		log.Fatal("could not convert interface to *Track")
 	}
+	return xx, yy
+}
+
+// These functions behave like C's strcmp
+func cmpTitle(x, y interface{}) int {
+	xx, yy := toTrack(x, y)
 	switch {
 	case xx.Title < yy.Title:
 		return -1
@@ -49,11 +54,7 @@ func cmpTitle(x, y interface{}) int {
 }
 
 func cmpArtist(x, y interface{}) int {
-	xx, ok1 := x.(*Track)
-	yy, ok2 := y.(*Track)
-	if !ok1 || !ok2 {
-		log.Fatal("could not convert interface to *Track")
-	}
+	xx, yy := toTrack(x, y)
 	switch {
 	case xx.Artist < yy.Artist:
 		return -1
@@ -65,11 +66,7 @@ func cmpArtist(x, y interface{}) int {
 }
 
 func cmpAlbum(x, y interface{}) int {
-	xx, ok1 := x.(*Track)
-	yy, ok2 := y.(*Track)
-	if !ok1 || !ok2 {
-		log.Fatal("could not convert interface to *Track")
-	}
+	xx, yy := toTrack(x, y)
 	switch {
 	case xx.Album < yy.Album:
 		return -1
@@ -81,11 +78,7 @@ func cmpAlbum(x, y interface{}) int {
 }
 
 func cmpYear(x, y interface{}) int {
-	xx, ok := x.(*Track)
-	yy, ok := y.(*Track)
-	if !ok {
-		log.Fatal("could not convert interface to *Track")
-	}
+	xx, yy := toTrack(x, y)
 	switch {
 	case xx.Year < yy.Year:
 		return -1
@@ -97,11 +90,7 @@ func cmpYear(x, y interface{}) int {
 }
 
 func cmpLength(x, y interface{}) int {
-	xx, ok := x.(*Track)
-	yy, ok := y.(*Track)
-	if !ok {
-		log.Fatal("could not convert interface to *Track")
-	}
+	xx, yy := toTrack(x, y)
 	switch {
 	case xx.Length < yy.Length:
 		return -1
@@ -117,10 +106,18 @@ var (
 	names    = []string{"Title", "Artist", "Album", "Year", "Length"}
 )
 
-// NewStatefulTracks takes a slice of pointers to tracks as an argument and
-// returns a statefulsort for these tracks.
+// NewStatefulTracks takes a slice of track pointers as an argument and returns
+// a statefulsort for these tracks.
 func NewStatefulTracks(tracks []*Track) statefulsort.StatefulSort {
 	return statefulsort.NewStatefulSort(toIface(tracks), names, cmpFuncs)
+}
+
+func toIface(tracks []*Track) []interface{} {
+	ifaces := make([]interface{}, len(tracks))
+	for i, t := range tracks {
+		ifaces[i] = t
+	}
+	return ifaces
 }
 
 // PrintTracks prints the tracks as they are currently sorted as a table.
@@ -149,12 +146,4 @@ func GetTracks(s statefulsort.StatefulSort) []*Track {
 		tracks[i] = t
 	}
 	return tracks
-}
-
-func toIface(tracks []*Track) []interface{} {
-	ifaces := make([]interface{}, len(tracks))
-	for i, t := range tracks {
-		ifaces[i] = t
-	}
-	return ifaces
 }
