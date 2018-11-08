@@ -1,5 +1,5 @@
 // Package track provides Track, an implementation of the statefulsort
-// interface that represents a muscic track on an aobum.
+// interface that represents a music track on an album.
 package track
 
 import (
