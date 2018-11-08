@@ -7,6 +7,7 @@ import "fmt"
 type sortStruct struct {
 	name    string
 	cmpFunc func(x, y interface{}) int
+	reverse bool
 }
 
 // StatefulSort implements sort.Interface and keeps track of the order in which
@@ -14,7 +15,6 @@ type sortStruct struct {
 type StatefulSort struct {
 	elements    []interface{}
 	sortStructs []*sortStruct
-	reverse     bool
 }
 
 // NewStatefulSort returns a stateful sort for the slice of elements e, which
@@ -35,10 +35,11 @@ func NewStatefulSort(e []interface{}, names []string, cmpFuncs []func(x, y inter
 		sortStructs = append(sortStructs, &sortStruct{
 			names[i],
 			cmpFuncs[i],
+			false,
 		})
 	}
 
-	return StatefulSort{e, sortStructs, false}
+	return StatefulSort{e, sortStructs}
 }
 
 // Elements returns the elements of a stateful sort.
@@ -62,12 +63,12 @@ func (s StatefulSort) Less(i, j int) bool {
 	for _, sStr := range s.sortStructs {
 		switch sStr.cmpFunc(s.elements[i], s.elements[j]) {
 		case -1:
-			return !s.reverse
+			return !sStr.reverse
 		case 1:
-			return s.reverse
+			return sStr.reverse
 		}
 	}
-	return s.reverse
+	return false
 }
 
 // SetPrimary moves the sort function corresponding to name n to the front of
@@ -88,7 +89,7 @@ func (s *StatefulSort) SetPrimary(n string) error {
 
 	if idx == 0 {
 		// Reverse sort order
-		s.reverse = !s.reverse
+		s.sortStructs[0].reverse = !s.sortStructs[0].reverse
 		return nil
 	}
 
