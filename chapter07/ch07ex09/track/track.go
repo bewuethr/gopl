@@ -1,13 +1,11 @@
 // Package track provides Track, an implementation of the statefulsort
-// interface that represents a muscic track on an aobum.
+// interface that represents a music track on an album.
 package track
 
 import (
-	"fmt"
 	"html/template"
 	"io"
 	"log"
-	"text/tabwriter"
 	"time"
 
 	"gopl/chapter07/ch07ex08/statefulsort"
@@ -146,19 +144,6 @@ func PrintTrackTable(s statefulsort.StatefulSort, w io.Writer) {
 	if err := trackTable.Execute(w, tracks); err != nil {
 		panic(err)
 	}
-}
-
-// PrintTracks prints the tracks as they are currently sorted as a table.
-func PrintTracks(s statefulsort.StatefulSort, w io.Writer) {
-	tracks := GetTracks(s)
-	const format = "%v\t%v\t%v\t%v\t%v\t\n"
-	tw := new(tabwriter.Writer).Init(w, 0, 8, 2, ' ', 0)
-	fmt.Fprintf(tw, format, "Title", "Artist", "Album", "Year", "Length")
-	fmt.Fprintf(tw, format, "-----", "------", "-----", "----", "------")
-	for _, t := range tracks {
-		fmt.Fprintf(tw, format, t.Title, t.Artist, t.Album, t.Year, t.Length)
-	}
-	tw.Flush() // calculate column widths and print table
 }
 
 // GetTracks returns the track pointer slice for the statefulsort supplied as
