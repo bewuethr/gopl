@@ -4,6 +4,7 @@ package track
 
 import (
 	"fmt"
+	"html/template"
 	"io"
 	"log"
 	"text/tabwriter"
@@ -103,7 +104,7 @@ func cmpLength(x, y interface{}) int {
 
 var (
 	cmpFuncs = []func(x, y interface{}) int{cmpTitle, cmpArtist, cmpAlbum, cmpYear, cmpLength}
-	names    = []string{"Title", "Artist", "Album", "Year", "Length"}
+	names    = []string{"title", "artist", "album", "year", "length"}
 )
 
 // NewStatefulTracks takes a slice of track pointers as an argument and returns
@@ -118,6 +119,33 @@ func toIface(tracks []*Track) []interface{} {
 		ifaces[i] = t
 	}
 	return ifaces
+}
+
+var trackTable = template.Must(template.New("table").Parse(`<table>
+<tr>
+  <th><a href="?orderby=title">Title</a></th>
+  <th><a href="?orderby=artist">Artist</a></th>
+  <th><a href="?orderby=album">Album</a></th>
+  <th><a href="?orderby=year">Year</a></th>
+  <th><a href="?orderby=length">Length</a></th>
+</tr>
+{{range . -}}
+<tr>
+  <td>{{.Title}}</td>
+  <td>{{.Artist}}</td>
+  <td>{{.Album}}</td>
+  <td>{{.Year}}</td>
+  <td>{{.Length}}</td>
+</tr>
+{{- end}}
+</table>`))
+
+// PrintTrackTable writes an HTML table containing the tracks from s to writer w.
+func PrintTrackTable(s statefulsort.StatefulSort, w io.Writer) {
+	tracks := GetTracks(s)
+	if err := trackTable.Execute(w, tracks); err != nil {
+		panic(err)
+	}
 }
 
 // PrintTracks prints the tracks as they are currently sorted as a table.
