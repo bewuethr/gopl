@@ -1,4 +1,4 @@
-// ch04ex06 reverses a byte slice representing a UTF-8 string in-place.
+// Ch04ex07 reverses a byte slice representing a UTF-8 string in-place.
 package main
 
 import (

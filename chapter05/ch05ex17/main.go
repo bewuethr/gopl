@@ -1,4 +1,4 @@
-// ch05ex17 implements a variadic function that extracts HTML elements by name
+// Ch05ex17 implements a variadic function that extracts HTML elements by name
 // from an HTML document.
 package main
 

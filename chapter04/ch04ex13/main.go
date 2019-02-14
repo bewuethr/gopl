@@ -1,4 +1,4 @@
-// ch04ex13 queries the IMDb API at voku.xyz for movie titles and fetches the
+// Ch04ex13 queries the IMDb API at voku.xyz for movie titles and fetches the
 // poster for the movie supplied as a command line argument.
 package main
 

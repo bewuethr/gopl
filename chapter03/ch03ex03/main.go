@@ -1,4 +1,4 @@
-// Modify surface to colour peaks red and valleys blue
+// Ch03ex03 modifies surface to colour peaks red and valleys blue.
 package main
 
 import (

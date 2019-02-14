@@ -1,5 +1,5 @@
-// Web server that renders fractals and writes image data to client. Client can
-// specify x, y, size and zoom values in the request.
+// Ch03ex09 implements a web server that renders fractals and writes image data
+// to client. The client can specify x, y, size and zoom values in the request.
 package main
 
 import (

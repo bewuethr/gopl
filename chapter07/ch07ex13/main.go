@@ -1,11 +1,11 @@
-// ch07ex13 tests an implementation of the Expr interface with an additional
+// Ch07ex13 tests an implementation of the Expr interface with an additional
 // pretty printer method Print().
 package main
 
 import (
 	"fmt"
 
-	"gopl/chapter07/ch07ex13/eval"
+	"github.com/bewuethr/gopl/chapter07/ch07ex13/eval"
 )
 
 func main() {

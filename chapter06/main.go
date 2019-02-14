@@ -1,10 +1,10 @@
-// chapter06 implements exercises 6.1 to 6.4.
+// Chapter06 implements exercises 6.1 to 6.4.
 package main
 
 import (
 	"fmt"
 
-	"gopl/chapter06/intset"
+	"github.com/bewuethr/gopl/chapter06/intset"
 )
 
 func main() {

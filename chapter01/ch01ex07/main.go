@@ -1,4 +1,4 @@
-// Use io.copy instead of ioutil.ReadAll for fetch
+// Ch01ex07 uses io.copy instead of ioutil.ReadAll for fetch.
 package main
 
 import (

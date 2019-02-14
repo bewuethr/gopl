@@ -1,4 +1,4 @@
-// ch04ex08 adds Unicode category counts to the charcount program.
+// Ch04ex08 adds Unicode category counts to the charcount program.
 package main
 
 import (

@@ -1,4 +1,4 @@
-// ch05ex06 modifies the corner function of the surface program to use named
+// Ch05ex06 modifies the corner function of the surface program to use named
 // results and a bare return statement.
 package main
 

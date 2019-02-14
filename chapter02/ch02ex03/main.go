@@ -1,4 +1,4 @@
-// Package ch02ex03 with modified popcount using loop instead of single
+// Package ch02ex03 modifies popcount using a loop instead of a single
 // expression.
 package ch02ex03
 

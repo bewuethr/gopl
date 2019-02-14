@@ -1,4 +1,5 @@
-// Web server that computes sufaces and writes SVG data to client
+// Ch03ex04 provides a web server that computes sufaces and writes SVG data to
+// the client.
 package main
 
 import (

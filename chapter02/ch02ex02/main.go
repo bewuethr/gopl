@@ -1,4 +1,4 @@
-// ch02ex02 is a general-purpose unit-conversion program.
+// Ch02ex02 is a general-purpose unit-conversion program.
 package main
 
 import (

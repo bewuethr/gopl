@@ -1,9 +1,7 @@
-// ch04ex03: reverse using an array pointer instead of a slice
+// Ch04ex03 reverses an array using a pointer instead of a slice.
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
 	a := [...]int{0, 1, 2, 3, 4, 5}

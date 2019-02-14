@@ -1,4 +1,4 @@
-// Newton fractal for z^4 - 1 = 0 with supersampling.
+// Ch03ex07 generates a Newton fractal for z^4 - 1 = 0 with supersampling.
 package main
 
 import (

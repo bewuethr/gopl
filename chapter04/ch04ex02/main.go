@@ -1,4 +1,4 @@
-// ch04ex02 prints the SHA256 hash of its standard input, but supports command
+// Ch04ex02 prints the SHA256 hash of its standard input, but supports command
 // line flags for SHA384 or SHA512 hashes as well.
 package main
 

@@ -1,4 +1,5 @@
-// Modify dup2 to print names of files in which duplicate occur
+// Ch01ex04 modifies dup2 to print the names of files in which duplicates
+// occur.
 package main
 
 import (

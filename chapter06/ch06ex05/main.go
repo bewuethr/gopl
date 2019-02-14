@@ -1,10 +1,10 @@
-// ch06ex06 uses a platform-specific word sizes for the bitset implementation.
+// Ch06ex06 uses a platform-specific word sizes for the bitset implementation.
 package main
 
 import (
 	"fmt"
 
-	"gopl/chapter06/ch06ex05/intset"
+	"github.com/bewuethr/gopl/chapter06/ch06ex05/intset"
 )
 
 func main() {

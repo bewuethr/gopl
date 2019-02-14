@@ -1,4 +1,4 @@
-// ch05ex11 extends topoSort to report cycles.
+// Ch05ex11 extends topoSort to report cycles.
 package main
 
 import (

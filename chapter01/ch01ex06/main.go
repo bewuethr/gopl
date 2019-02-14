@@ -1,4 +1,4 @@
-// Produce Lissajous images in multiple colours
+// Ch01ex06 produces Lissajous images in multiple colours.
 package main
 
 import (

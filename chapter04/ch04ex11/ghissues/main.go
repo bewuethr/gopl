@@ -1,4 +1,4 @@
-// ghissues lets you create, read, update and close GitHub issues from the
+// Ghissues lets you create, read, update and close GitHub issues from the
 // command line.
 package main
 
@@ -10,7 +10,7 @@ import (
 	"os/exec"
 	"strconv"
 
-	"gopl/chapter04/ch04ex11/github"
+	"github.com/bewuethr/gopl/chapter04/ch04ex11/github"
 )
 
 func main() {

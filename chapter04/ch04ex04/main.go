@@ -1,9 +1,7 @@
-// ch04ex04 implements a single pass rotate function.
+// Ch04ex04 implements a single pass rotate function.
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
 	s := []int{0, 1, 2, 3, 4, 5}

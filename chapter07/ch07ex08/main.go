@@ -1,18 +1,18 @@
-// ch07ex08 tests the statefulsort implementation for music tracks.
+// Ch07ex08 tests the statefulsort implementation for music tracks.
 package main
 
 import (
 	"fmt"
 	"sort"
 
-	"gopl/chapter07/ch07ex08/track"
+	"github.com/bewuethr/gopl/chapter07/ch07ex08/track"
 )
 
 var tracks = []*track.Track{
-	{"Go", "Moby", "Moby", 1992, track.Length("3m37s")},
-	{"Ready 2 Go", "Martin Solveig", "Smash", 2011, track.Length("4m24s")},
-	{"Go Ahead", "Alicia Keys", "As I Am", 2007, track.Length("4m36s")},
-	{"Go", "Delilah", "From the Roots Up", 2012, track.Length("3m38s")},
+	{Title: "Go", Artist: "Moby", Album: "Moby", Year: 1992, Length: track.Length("3m37s")},
+	{Title: "Ready 2 Go", Artist: "Martin Solveig", Album: "Smash", Year: 2011, Length: track.Length("4m24s")},
+	{Title: "Go Ahead", Artist: "Alicia Keys", Album: "As I Am", Year: 2007, Length: track.Length("4m36s")},
+	{Title: "Go", Artist: "Delilah", Album: "From the Roots Up", Year: 2012, Length: track.Length("3m38s")},
 }
 
 func main() {

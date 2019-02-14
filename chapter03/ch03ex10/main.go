@@ -1,4 +1,4 @@
-// ch03ex10 is a non-recursive version of comma using bytes.Buffer instead of
+// Ch03ex10 is a non-recursive version of comma using bytes.Buffer instead of
 // string concatenation.
 package main
 

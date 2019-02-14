@@ -1,4 +1,4 @@
-// ch04ex09 counts the frequency of each word in an input text file.
+// Ch04ex09 counts the frequency of each word in an input text file.
 package main
 
 import (

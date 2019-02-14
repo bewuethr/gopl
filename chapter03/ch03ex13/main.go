@@ -1,4 +1,4 @@
-// ch03ex13 declares constants for KB, MB etc. as compactly as possible.
+// Ch03ex13 declares constants for KB, MB etc. as compactly as possible.
 package main
 
 import "fmt"

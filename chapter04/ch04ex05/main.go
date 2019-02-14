@@ -1,5 +1,5 @@
-// ch04ex05 implements an in-place function that eliminates adjacent
-// duplicates in a []string slice.
+// Ch04ex05 implements an in-place function that eliminates adjacent duplicates
+// in a []string slice.
 package main
 
 import "fmt"

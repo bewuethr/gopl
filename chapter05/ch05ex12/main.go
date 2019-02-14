@@ -1,4 +1,4 @@
-// ch05ex12 turns startElement and endElement into anonymous functions sharing
+// Ch05ex12 turns startElement and endElement into anonymous functions sharing
 // a variable local to the outline function.
 package main
 

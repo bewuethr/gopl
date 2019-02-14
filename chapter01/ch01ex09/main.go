@@ -1,4 +1,4 @@
-// Modify fetch to also print the HTTP status code
+// Ch01ex09 modifies fetch to also print the HTTP status code.
 package main
 
 import (

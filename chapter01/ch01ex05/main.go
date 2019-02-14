@@ -1,4 +1,4 @@
-// Change the palette to green on black
+// Ch01ex05 changes the palette to green on black.
 package main
 
 import (

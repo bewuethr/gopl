@@ -1,4 +1,5 @@
-// Modify Echo to print index and value of each argument, one per line
+// Ch01ex02 modifies Echo to print the index and value of each argument, one
+// per line.
 package main
 
 import (

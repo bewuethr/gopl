@@ -1,4 +1,4 @@
-// ch05ex14 uses breadthFirst to traverse other structures.
+// Ch05ex14 uses breadthFirst to traverse other structures.
 package main
 
 import "fmt"

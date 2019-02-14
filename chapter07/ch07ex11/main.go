@@ -1,4 +1,4 @@
-// ch07ex11 adds CRUD functionality to a simple e-commerce server.
+// Ch07ex11 adds CRUD functionality to a simple e-commerce server.
 package main
 
 import (

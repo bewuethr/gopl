@@ -1,4 +1,4 @@
-// complex64 renders the Mandelbrot fractal using complex64.
+// Complex64 renders the Mandelbrot fractal using complex64.
 package main
 
 import (

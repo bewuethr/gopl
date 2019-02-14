@@ -1,4 +1,4 @@
-// ch03ex12 tests whether two strings are anagrams of each other.
+// Ch03ex12 tests whether two strings are anagrams of each other.
 package main
 
 import (

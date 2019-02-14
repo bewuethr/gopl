@@ -1,4 +1,4 @@
-// ch04ex01 counts the number of bits that are different in two SHA256 hashes.
+// Ch04ex01 counts the number of bits that are different in two SHA256 hashes.
 package main
 
 import (

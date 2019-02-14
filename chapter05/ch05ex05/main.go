@@ -1,4 +1,4 @@
-// ch05ex05 fetches the document from the URL specified as an argument and
+// Ch05ex05 fetches the document from the URL specified as an argument and
 // prints word and image count
 package main
 

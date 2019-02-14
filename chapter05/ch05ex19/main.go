@@ -1,4 +1,4 @@
-// ch05ex19 implements a function without return statement that returns a
+// Ch05ex19 implements a function without return statement that returns a
 // non-zero value.
 package main
 

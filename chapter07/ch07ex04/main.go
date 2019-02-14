@@ -1,4 +1,4 @@
-// ch07ex04 implements NewReader and a simple string reader to use with the
+// Ch07ex04 implements NewReader and a simple string reader to use with the
 // HTML parser from exercise 5.2.
 package main
 

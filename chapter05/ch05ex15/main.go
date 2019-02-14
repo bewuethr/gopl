@@ -1,4 +1,4 @@
-// ch05ex15 implements variadic max and min functions.
+// Ch05ex15 implements variadic max and min functions.
 package main
 
 import "fmt"

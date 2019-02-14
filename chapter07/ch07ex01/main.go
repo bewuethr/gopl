@@ -1,4 +1,4 @@
-// ch07ex01 implements writers that count words and lines.
+// Ch07ex01 implements writers that count words and lines.
 package main
 
 import (

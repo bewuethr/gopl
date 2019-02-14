@@ -1,4 +1,4 @@
-// ch04ex12 builds an index of xkcd transcripts that can be queried.
+// Ch04ex12 builds an index of xkcd transcripts that can be queried.
 package main
 
 import (

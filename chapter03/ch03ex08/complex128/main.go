@@ -1,4 +1,4 @@
-// complex128 renders the Mandelbrot fractal using complex128.
+// Complex128 renders the Mandelbrot fractal using complex128.
 package main
 
 import (

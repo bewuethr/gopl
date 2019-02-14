@@ -6,7 +6,7 @@ type Expr interface {
 	Eval(env Env) float64
 	// Check reports errors in this Expr and adds its Vars to the set.
 	Check(vars map[Var]bool) error
-	// Print pretty-prints an expression
+	// Print pretty-prints an expression.
 	Print() string
 }
 

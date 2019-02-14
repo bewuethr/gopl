@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"gopl/chapter04/ch04ex10/github"
+	"github.com/bewuethr/gopl/chapter04/ch04ex10/github"
 )
 
 const (

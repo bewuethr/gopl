@@ -8,7 +8,7 @@ import (
 	"log"
 	"time"
 
-	"gopl/chapter07/ch07ex08/statefulsort"
+	"github.com/bewuethr/gopl/chapter07/ch07ex08/statefulsort"
 )
 
 // Track describes a music track on an album.

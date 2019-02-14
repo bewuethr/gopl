@@ -1,4 +1,4 @@
-// Package ch02ex05 with modified popcount using x&(x-1)
+// Package ch02ex05 modifies popcount using x&(x-1).
 package ch02ex05
 
 // PopCount returns the population count (number of set bits) of x.

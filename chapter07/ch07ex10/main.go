@@ -1,4 +1,4 @@
-// ch07ex10 implements a palindrome checker taking advantage of sort.Interface.
+// Ch07ex10 implements a palindrome checker taking advantage of sort.Interface.
 package main
 
 import (

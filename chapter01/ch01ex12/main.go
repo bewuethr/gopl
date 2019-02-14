@@ -1,4 +1,5 @@
-// Modify Lissajous server to read parameter values from URL
+// Ch01ex12 modifies the Lissajous server to read parameter values from the
+// URL.
 package main
 
 import (

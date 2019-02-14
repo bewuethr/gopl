@@ -1,4 +1,4 @@
-// ch07ex05 implements a LimitReader.
+// Ch07ex05 implements a LimitReader.
 package main
 
 import (

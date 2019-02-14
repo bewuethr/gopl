@@ -1,4 +1,4 @@
-// ch05ex07 is an HTML pretty printer.
+// Ch05ex07 is an HTML pretty printer.
 package main
 
 import (

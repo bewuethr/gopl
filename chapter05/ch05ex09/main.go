@@ -1,4 +1,4 @@
-// ch05ex09 expands each substring $foo to f(foo).
+// Ch05ex09 expands each substring $foo to f(foo).
 package main
 
 import (

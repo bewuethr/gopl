@@ -1,4 +1,4 @@
-// ch03ex11 extends comma to work with floating-point numbers and an optional
+// Ch03ex11 extends comma to work with floating-point numbers and an optional
 // sign.
 package main
 

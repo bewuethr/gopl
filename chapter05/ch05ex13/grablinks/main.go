@@ -1,4 +1,4 @@
-// grablinks makes local copies of the pages it crawls, creating directories as
+// Grablinks makes local copies of the pages it crawls, creating directories as
 // necessary, except for pages from different domains.
 package main
 
@@ -12,7 +12,7 @@ import (
 	"os"
 	"strings"
 
-	"gopl/chapter05/ch05ex13/links"
+	"github.com/bewuethr/gopl/chapter05/ch05ex13/links"
 )
 
 // breadthFirst calls f for each item in the worklist. Any items returned by f

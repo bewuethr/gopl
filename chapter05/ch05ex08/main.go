@@ -1,4 +1,4 @@
-// ch05ex08 finds the first element with the given ID in the supplied HTML
+// Ch05ex08 finds the first element with the given ID in the supplied HTML
 // documents.
 package main
 

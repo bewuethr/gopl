@@ -1,4 +1,4 @@
-// ch05ex02 builds a mapping from element names to the number of occurrences of
+// Ch05ex02 builds a mapping from element names to the number of occurrences of
 // that element in an HTML tree.
 package main
 

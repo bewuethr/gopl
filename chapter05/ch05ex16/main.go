@@ -1,4 +1,4 @@
-// ch05ex16 implements strings.Join as a variadic function.
+// Ch05ex16 implements strings.Join as a variadic function.
 package main
 
 import (

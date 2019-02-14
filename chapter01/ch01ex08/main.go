@@ -1,4 +1,5 @@
-// Modify fetch to add prefix http:// to URL argument if missing
+// Ch01ex08 modifies fetch to add the prefix http:// to the URL argument if it
+// is missing.
 package main
 
 import (

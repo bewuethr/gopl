@@ -1,4 +1,4 @@
-// bigFloat renders the Mandelbrot fractal using math/big.Rat.
+// BigRat renders the Mandelbrot fractal using math/big.Rat.
 package main
 
 import (

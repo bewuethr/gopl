@@ -1,4 +1,4 @@
-// Modify surface to skip invalid polgyons
+// Ch03ex01 modifies surface to skip invalid polgyons.
 package main
 
 import (

@@ -1,4 +1,4 @@
-// ch07ex12 has the list endpoint rewritten to use html/template.
+// Ch07ex12 has the list endpoint rewritten to use html/template.
 package main
 
 import (

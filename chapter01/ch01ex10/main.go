@@ -1,4 +1,4 @@
-// Modify fetchall to print output to file
+// Ch01ex10 modifies fetchall to print the output to a file.
 package main
 
 import (

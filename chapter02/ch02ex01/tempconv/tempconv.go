@@ -1,4 +1,4 @@
-// Package tempconv performs Celsius, Fahrenheit and Kelvin conversions
+// Package tempconv performs Celsius, Fahrenheit and Kelvin conversions.
 package tempconv
 
 import "fmt"

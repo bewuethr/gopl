@@ -1,4 +1,4 @@
-// Full-colour mandelbrot set with supersampling.
+// Ch03ex06 generates a full-colour mandelbrot set with supersampling.
 package main
 
 import (

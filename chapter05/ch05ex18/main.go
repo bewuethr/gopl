@@ -1,4 +1,4 @@
-// ch05ex18 saves the contents of a URL into a local file, using defer to close
+// Ch05ex18 saves the contents of a URL into a local file, using defer to close
 // the file.
 package main
 

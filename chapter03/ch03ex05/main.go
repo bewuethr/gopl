@@ -1,4 +1,5 @@
-// Full-colour mandelbrot set using interpolated rainbow colours.
+// Ch03ex05 generates a full-colour mandelbrot set using interpolated rainbow
+// colours.
 package main
 
 import (

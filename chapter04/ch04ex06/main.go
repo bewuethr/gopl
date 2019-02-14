@@ -1,4 +1,4 @@
-// ch04ex06 squashes adjacent Unicode spaces in a UTF-8-encoded byte slice.
+// Ch04ex06 squashes adjacent Unicode spaces in a UTF-8-encoded byte slice.
 package main
 
 import (

@@ -5,7 +5,7 @@ import (
 	"sort"
 	"testing"
 
-	"gopl/chapter07/ch07ex03/treesort"
+	"github.com/bewuethr/gopl/chapter07/ch07ex03/treesort"
 )
 
 func TestSort(t *testing.T) {

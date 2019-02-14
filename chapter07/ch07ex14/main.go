@@ -1,9 +1,10 @@
+// Ch07ex14 implements a new type min that implements the Expr interface.
 package main
 
 import (
 	"fmt"
 
-	"gopl/chapter07/ch07ex14/eval"
+	"github.com/bewuethr/gopl/chapter07/ch07ex14/eval"
 )
 
 type testCase struct {

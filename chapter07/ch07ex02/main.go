@@ -1,4 +1,4 @@
-// ch07ex02 implements a function that returns a writer wrapping another writer
+// Ch07ex02 implements a function that returns a writer wrapping another writer
 // and an int64 representing the number of bytes written to the writer at any
 // time.
 package main

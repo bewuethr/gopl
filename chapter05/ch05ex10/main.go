@@ -1,4 +1,4 @@
-// ch05ex10 rewrites topoSort to use maps instead of slices and eliminates the
+// Ch05ex10 rewrites topoSort to use maps instead of slices and eliminates the
 // initial sort.
 package main
 

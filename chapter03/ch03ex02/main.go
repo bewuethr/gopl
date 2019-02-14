@@ -1,4 +1,4 @@
-// Modify surface to produce different surfaces
+// Ch03ex02 modifies surface to produce different surfaces.
 package main
 
 import (
