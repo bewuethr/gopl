@@ -1,5 +1,5 @@
 // Ch05ex05 fetches the document from the URL specified as an argument and
-// prints word and image count
+// prints word and image count.
 package main
 
 import (
