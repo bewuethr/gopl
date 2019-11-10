@@ -37,12 +37,12 @@ func teller() {
 		case amount := <-deposits:
 			balance += amount
 		case wdMsg := <-withdrawals:
-			if wdMsg.amount <= balance {
-				balance -= wdMsg.amount
-				wdMsg.txSucceeded <- true
-			} else {
+			if wdMsg.amount > balance {
 				wdMsg.txSucceeded <- false
+				continue
 			}
+			balance -= wdMsg.amount
+			wdMsg.txSucceeded <- true
 		case balances <- balance:
 		}
 	}
