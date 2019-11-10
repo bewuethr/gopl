@@ -1,6 +1,6 @@
-// Package bank adds a Withdraw function to the bank package described in
+// Package ch09ex01 adds a Withdraw function to the bank package described in
 // Chapter 9, Section 1.
-package bank
+package ch09ex01
 
 type withdrawalMsg struct {
 	amount      int
