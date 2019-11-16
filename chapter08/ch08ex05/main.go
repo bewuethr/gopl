@@ -1,5 +1,9 @@
 // Ch08ex05 is a concurrent version of the Mandelbrot program from Chapter 3.3.
-// The channel is buffered to 10 elements per goroutine.
+// Usage:
+//
+//     ch08ex05 [-P NPROC]
+//
+// where NPROC is the number of goroutines to be used.
 package main
 
 import (
@@ -9,12 +13,8 @@ import (
 	"image/png"
 	"math/cmplx"
 	"os"
+	"sync"
 )
-
-type pixel struct {
-	x, y int
-	c    color.Color
-}
 
 func main() {
 	const (
@@ -26,40 +26,35 @@ func main() {
 	flag.IntVar(&nProcs, "P", 1, "number of goroutines")
 	flag.Parse()
 
-	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	pixels := make(chan pixel, 10*nProcs)
-	procHeight := height / nProcs
+	var (
+		img  = image.NewRGBA(image.Rect(0, 0, width, height))
+		rows = make(chan int)
+		wg   = &sync.WaitGroup{}
+	)
 
 	for i := 0; i < nProcs; i++ {
-		minY := i * procHeight
-		var maxY int
-		if i == nProcs-1 {
-			maxY = height
-		} else {
-			maxY = (i + 1) * procHeight
-		}
-
-		go func(minY, maxY int) {
-			for py := minY; py < maxY; py++ {
+		wg.Add(1)
+		go func(rows <-chan int) {
+			for py := range rows {
 				y := float64(py)/height*(ymax-ymin) + ymin
 				for px := 0; px < width; px++ {
 					x := float64(px)/width*(xmax-xmin) + xmin
-					z := complex(x, y)
-					pixels <- pixel{
-						x: px,
-						y: py,
-						c: mandelbrot(z),
-					}
+					c := mandelbrot(complex(x, y))
+					img.Set(px, py, c)
 				}
 			}
-		}(minY, maxY)
+			wg.Done()
+		}(rows)
 	}
 
-	for i := 0; i < width*height; i++ {
-		pixel := <-pixels
-		img.Set(pixel.x, pixel.y, pixel.c)
-	}
+	go func() {
+		for py := 0; py < height; py++ {
+			rows <- py
+		}
+		close(rows)
+	}()
 
+	wg.Wait()
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
 }
 
