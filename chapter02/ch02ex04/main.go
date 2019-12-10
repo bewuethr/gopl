@@ -1,4 +1,4 @@
-// Package ch02ex04 modifies popcount popcount using shifting.
+// Package ch02ex04 modifies popcount using shifting.
 package ch02ex04
 
 // PopCount returns the population count (number of set bits) of x.
