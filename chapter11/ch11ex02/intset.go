@@ -4,6 +4,8 @@ package intset
 import (
 	"bytes"
 	"fmt"
+	"sort"
+	"strconv"
 )
 
 // An IntSet is a set of small non-negative integers.
@@ -57,4 +59,34 @@ func (s *IntSet) String() string {
 	}
 	buf.WriteByte('}')
 	return buf.String()
+}
+
+// RefSet is a reference implementation of the intset using the built-in map.
+type RefSet map[int]bool
+
+// String returns a stringified version of a RefSet.
+func (s RefSet) String() string {
+	var v []int
+	for x := range s {
+		v = append(v, x)
+	}
+	sort.Ints(v)
+
+	var buf bytes.Buffer
+	buf.WriteByte('{')
+	for _, x := range v {
+		if buf.Len() > len("{") {
+			buf.WriteByte(' ')
+		}
+		fmt.Fprintf(&buf, strconv.Itoa(x))
+	}
+	buf.WriteByte('}')
+	return buf.String()
+}
+
+// UnionWith adds RefSet t to RefSet s.
+func (s RefSet) UnionWith(t RefSet) {
+	for k := range t {
+		s[k] = true
+	}
 }
