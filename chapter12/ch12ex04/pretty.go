@@ -82,7 +82,7 @@ func (p *printer) scanStrToken(s string) {
 	}
 }
 
-func (p *printer) scanOpenDelim() {
+func (p *printer) scanOpenDelim(prefix string) {
 	t := &token{kind: openDelim}
 	if len(p.sStack) == 0 {
 		p.rightotal = 1
@@ -90,7 +90,7 @@ func (p *printer) scanOpenDelim() {
 	t.length = -p.rightotal
 	p.tokens = append(p.tokens, t)
 	p.sStack = append(p.sStack, t)
-	p.scanStrToken("(")
+	p.scanStrToken(prefix + "(")
 }
 
 func (p *printer) scanCloseDelim() {
@@ -148,7 +148,7 @@ func encode(p *printer, v reflect.Value) error {
 		return encode(p, v.Elem())
 
 	case reflect.Array, reflect.Slice: // (value ...)
-		p.scanOpenDelim()
+		p.scanOpenDelim("")
 		for i := 0; i < v.Len(); i++ {
 			if i > 0 {
 				p.scanBlankToken()
@@ -160,12 +160,12 @@ func encode(p *printer, v reflect.Value) error {
 		p.scanCloseDelim()
 
 	case reflect.Struct: // ((name value) ...)
-		p.scanOpenDelim()
+		p.scanOpenDelim("")
 		for i := 0; i < v.NumField(); i++ {
 			if i > 0 {
 				p.scanBlankToken()
 			}
-			p.scanOpenDelim()
+			p.scanOpenDelim("")
 			p.scanStrToken(v.Type().Field(i).Name)
 			p.scanBlankToken()
 			if err := encode(p, v.Field(i)); err != nil {
@@ -176,12 +176,12 @@ func encode(p *printer, v reflect.Value) error {
 		p.scanCloseDelim()
 
 	case reflect.Map: // ((key value) ...)
-		p.scanOpenDelim()
+		p.scanOpenDelim("")
 		for i, key := range v.MapKeys() {
 			if i > 0 {
 				p.scanBlankToken()
 			}
-			p.scanOpenDelim()
+			p.scanOpenDelim("")
 			if err := encode(p, key); err != nil {
 				return err
 			}
@@ -193,7 +193,33 @@ func encode(p *printer, v reflect.Value) error {
 		}
 		p.scanCloseDelim()
 
-	default: // float, complex, bool, chan, func, interface
+	case reflect.Bool:
+		if v.Bool() {
+			p.scanStrToken("t")
+		} else {
+			p.scanStrToken("nil")
+		}
+
+	case reflect.Float32, reflect.Float64:
+		p.scanStrToken(fmt.Sprintf("%g", v.Float()))
+
+	case reflect.Complex64, reflect.Complex128:
+		p.scanOpenDelim("#C")
+		p.scanStrToken(fmt.Sprintf("%g", real(v.Complex())))
+		p.scanBlankToken()
+		p.scanStrToken(fmt.Sprintf("%g", imag(v.Complex())))
+		p.scanCloseDelim()
+
+	case reflect.Interface: // ("type name" value)
+		p.scanOpenDelim("")
+		p.scanStrToken(fmt.Sprintf(`"%v"`, v.Elem().Type()))
+		p.scanBlankToken()
+		if err := encode(p, v.Elem()); err != nil {
+			return err
+		}
+		p.scanCloseDelim()
+
+	default: // chan, func
 		return fmt.Errorf("unsupported type: %s", v.Type())
 	}
 	return nil
