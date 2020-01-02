@@ -31,7 +31,6 @@ func TestMarshal(t *testing.T) {
 		{1.1 + 2.1i, []byte("#C(1.1 2.1)"), nil},                  // complex number
 		{&anInterface, []byte(`("[]int" (1 2 3))`), nil},          // interface
 		{aFunc, []byte{}, fmt.Errorf("unsupported type: func()")}, // unsupported type
-
 	}
 
 	for _, test := range tests {
