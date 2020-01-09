@@ -34,7 +34,8 @@ func (s EndList) String() string   { return string(s) }
 // A Decoder represents an S-epxressions parser reading tokens from an input
 // stream.
 type Decoder struct {
-	s *scanner.Scanner
+	s  *scanner.Scanner
+	nl int // nesting level
 }
 
 // NewDecoder creates a new Deocoder reading from r.
@@ -50,6 +51,10 @@ func (d *Decoder) Token() (Token, error) {
 	var err error
 	switch r := d.s.Scan(); r {
 	case scanner.EOF:
+		if d.nl != 0 {
+			err = fmt.Errorf("missing EndList token at %v", d.s.Position)
+			break
+		}
 		err = io.EOF
 	case scanner.Ident:
 		t = Symbol(d.s.TokenText())
@@ -62,11 +67,17 @@ func (d *Decoder) Token() (Token, error) {
 			t = Int(i)
 		}
 	case '(':
-		t = StartList('(')
+		t = StartList(r)
+		d.nl++
 	case ')':
-		t = EndList(')')
+		t = EndList(r)
+		if d.nl == 0 {
+			err = fmt.Errorf("expression is not well-formed at %v", d.s.Position)
+			break
+		}
+		d.nl--
 	default:
-		err = fmt.Errorf("unexpected token: %v", r)
+		err = fmt.Errorf("unexpected token: %q", d.s.TokenText())
 	}
 	return t, err
 }

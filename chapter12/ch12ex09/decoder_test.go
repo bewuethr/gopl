@@ -2,7 +2,6 @@ package ch12ex09
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"testing"
 )
@@ -24,12 +23,36 @@ func TestDecoder(t *testing.T) {
 		d := NewDecoder(s)
 		tok, err := d.Token()
 		for err == nil {
-			fmt.Printf("%T: %[1]v\n", tok)
+			t.Logf("%T: %[1]v\n", tok)
 			tok, err = d.Token()
 		}
 		if err != io.EOF {
 			t.Errorf("error: %v", err)
 		}
-		fmt.Println()
+	}
+}
+
+func TestDecoderErrors(t *testing.T) {
+	var tests = []string{
+		")",
+		"(()",
+		"1.23",
+		"(1",
+		`("abc"))`,
+	}
+
+	for _, test := range tests {
+		s := bytes.NewBufferString(test)
+		d := NewDecoder(s)
+		tok, err := d.Token()
+		for err == nil {
+			t.Logf("%T: %[1]v\n", tok)
+			tok, err = d.Token()
+		}
+		if err == io.EOF || err == nil {
+			t.Error("expected error, but didn't get one")
+		} else {
+			t.Logf("expected error: %v", err)
+		}
 	}
 }
