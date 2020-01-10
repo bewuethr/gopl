@@ -1,3 +1,4 @@
+// Package ch12ex09 provides a token-based API to decode S-expressions.
 package ch12ex09
 
 import (
