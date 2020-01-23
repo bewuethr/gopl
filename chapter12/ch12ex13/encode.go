@@ -9,7 +9,9 @@ import (
 	"strings"
 )
 
-// Marshal encodes a Go value in S-expression form.
+// Marshal encodes a Go value in S-expression form. It respects "sexpr" struct
+// tags for renaming, omitting null values ("omitempty" option) and generally
+// skipping a field (tag "-"), analogous to JSON struct tags.
 func Marshal(v interface{}) ([]byte, error) {
 	var buf bytes.Buffer
 	if err := encode(&buf, reflect.ValueOf(v)); err != nil {
