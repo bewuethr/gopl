@@ -6,7 +6,6 @@ import (
 )
 
 func TestMarshal(t *testing.T) {
-
 	var tests = []struct {
 		in   interface{}
 		want []byte
