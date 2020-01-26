@@ -63,13 +63,13 @@ func (w *writer) Write(data []byte) (int, error) {
 // the underlying io.Writer.
 func (w *writer) Close() error {
 	w.mu.Lock()
-	defer w.mu.Unlock()
 	if w.stream == nil {
 		panic("closed")
 	}
 	defer func() {
 		C.BZ2_bzCompressEnd(w.stream)
 		C.bz2free(w.stream)
+		w.mu.Unlock()
 		w.stream = nil
 	}()
 	for {
