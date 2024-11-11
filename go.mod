@@ -1,5 +1,5 @@
 module github.com/bewuethr/gopl
 
-go 1.20
+go 1.23.3
 
 require golang.org/x/net v0.31.0
